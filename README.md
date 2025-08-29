@@ -1,6 +1,7 @@
 # README
 Repositorio de nuestro proyecto:
-Integrantes:
+
+### Integrantes:
 
 *Alex Espinosa - 202330554-5   (201)
 
