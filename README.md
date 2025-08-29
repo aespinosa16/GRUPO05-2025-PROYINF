@@ -18,10 +18,10 @@ Repositorio de nuestro proyecto:
 
 > Obtener enlace desde el home de la wiki del repo.
 
-Puede acceder a la Wiki mediante el siguiente [enlace]https://github.com/aespinosa16/GRUPO05-2025-PROYINF/wiki
+Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/aespinosa16/GRUPO05-2025-PROYINF/wiki)
 
 ## Videos
 
 > Reemplazar con los enlaces correspondientes
 
-* [Video presentación cliente]https://aula.usm.cl/mod/resource/view.php?id=6926137
+* [Video presentación cliente](https://aula.usm.cl/mod/resource/view.php?id=6926137)
