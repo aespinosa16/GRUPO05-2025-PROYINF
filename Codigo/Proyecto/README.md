@@ -16,7 +16,7 @@ git clone https://github.com/MatiasBV/analisis-y-diseno-de-software.git
 (debe tener docker-desktop abierto en todo momento)
 Ejecutar en terminal:
 
-1. Deben navegar hasta la carpeta Codigo\Proyecto  
+1. Deben navegar hasta la carpeta analisis-y-diseno-de-software/mi-proyecto-node-docker  
 
 2. (les instalará las dependencias se suele demorar un poco la primera vez con esto levantan el proyecto)  
 docker compose up --build
