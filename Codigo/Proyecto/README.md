@@ -8,7 +8,6 @@ Este es un ejemplo de una aplicación Node.js usando Express, Docker y PostgreSQ
 - [Docker Compose](https://docs.docker.com/compose/install/) (v2.0+)
 - [Node.js](https://nodejs.org/) (opcional, solo para desarrollo local)
 - `curl` o cliente HTTP (para probar endpoints)
-- React
 
 ## Instalación
 
@@ -17,7 +16,7 @@ git clone https://github.com/MatiasBV/analisis-y-diseno-de-software.git
 (debe tener docker-desktop abierto en todo momento)
 Ejecutar en terminal:
 
-1. Deben navegar hasta la carpeta codigo/proyecto 
+1. Deben navegar hasta la carpeta analisis-y-diseno-de-software/mi-proyecto-node-docker  
 
 2. (les instalará las dependencias se suele demorar un poco la primera vez con esto levantan el proyecto)  
 docker compose up --build

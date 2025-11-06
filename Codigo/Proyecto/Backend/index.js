@@ -1,38 +1,86 @@
-// Backend/index.js (CJS)
+
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const pool = require("./db.js");                 // ← SIN llaves
-const simulateRouter = require("./rutas/simulador.js"); // ← SIN llaves
+
+if (!process.env.DB_PASSWORD && process.env.DB_PASSW) {
+  process.env.DB_PASSWORD = process.env.DB_PASSW;
+}
 
 const app = express();
-const PORT = Number(process.env.PORT || 3000);
 
-app.use(cors());
-app.use(express.json());
+app.use(cors());                  
+app.use(express.json());          
+app.set("trust proxy", true);     
 
-// Health
-app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "api", ts: new Date().toISOString() });
-});
 
-// DB check
-app.get("/db", async (_req, res) => {
+let pool;
+try {
+  
+  ({ pool } = require("./db"));
+
+  
+  pool.query("SELECT 1")
+    .then(() => {
+      console.log("[DB] Conectado a Postgres ");
+    })
+    .catch((err) => {
+      console.error("[DB] Error de conexión :", err.message);
+    });
+} catch (e) {
+  console.error("[DB] No se pudo cargar ./db:", e.message);
+}
+
+app.get("/health", async (_, res) => {
   try {
-    const r = await pool.query("SELECT NOW() AS now");
-    res.json({ ok: true, now: r.rows[0].now });
-  } catch (e) {
-    res.status(500).json({ ok: false, error: String(e) });
+    if (pool) await pool.query("SELECT 1");
+    return res.json({ ok: true });
+  } catch {
+    return res.status(500).json({ ok: false });
   }
 });
 
-// Simulador
-app.use("/simulate", simulateRouter);
 
-// (Opcional) Mensajes si los tienes
-// app.get("/messages", ...)
-// app.post("/messages", ...)
-// app.delete("/messages/:id", ...)
+const authRouter = require("./rutas/auth");
+app.use("/api/auth", authRouter);
 
+const { enviarCorreo } = require("./utils/mailer");
+
+app.get("/api/test-email", async (req, res) => {
+  try {
+    await enviarCorreo({
+      para: process.env.MAIL_USER, 
+      asunto: "Prueba de envío",
+      texto: "¡Correo de prueba enviado correctamente desde tu backend !",
+    });
+    res.json({ ok: true, mensaje: "Correo enviado correctamente" });
+  } catch (err) {
+    console.error("[TEST MAIL] Error:", err.message);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Ruta no encontrada" });
+});
+
+
+app.use((err, req, res, next) => {
+  console.error("[ERROR]", err);
+  res.status(500).json({ error: "Error interno del servidor." });
+});
+
+
+const PORT = Number(process.env.PORT || 3000);
 app.listen(PORT, () => {
-  console.log("API on", PORT);
+  console.log(`API escuchando en puerto ${PORT} 🚀`);
+});
+
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Rejection:", reason);
+});
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
 });

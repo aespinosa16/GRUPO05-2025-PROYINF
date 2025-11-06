@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router(); // ← nombre local cualquiera
+const router = express.Router(); 
 
 router.post("/", (req, res) => {
   const {
@@ -101,4 +101,4 @@ router.post("/", (req, res) => {
   });
 });
 
-module.exports = router; // ← exporta el router DIRECTO
+module.exports = router; 

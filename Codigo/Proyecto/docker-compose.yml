@@ -10,7 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
-      # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro   # (opcional)
+      - ./db/init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro 
+      
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U appuser -d appdb"]
       interval: 5s
@@ -19,7 +20,7 @@ services:
 
   backend:
     build:
-      context: ./Backend           # aquí está tu Dockerfile del back
+      context: ./Backend
       dockerfile: Dockerfile
     container_name: app-backend
     environment:
@@ -29,18 +30,25 @@ services:
       DB_PASSWORD: apppass
       DB_NAME: appdb
       PORT: 3000
+      JWT_SECRET: supersecreto_ultra
+      JWT_EXPIRES: 2h
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: "587"
+      MAIL_USER: consumoprestamos6@gmail.com
+      MAIL_PASS: pplf gqrt qyzp ilbp
+      MAIL_FROM: "Verificación consumoprestamos6@gmail.com"
     depends_on:
       db:
         condition: service_healthy
     ports:
       - "3000:3000"
     volumes:
-      - ./backend:/app             # hot-reload si usas nodemon; si no, puedes quitarlo
+      - ./backend:/app             
       - /app/node_modules
 
   frontend:
     build:
-      context: ./frontend          # aquí está tu Dockerfile del front
+      context: ./frontend          
       dockerfile: Dockerfile
     container_name: app-frontend
     environment:
