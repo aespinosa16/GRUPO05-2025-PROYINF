@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// PASO 1: Importamos el 'hook' de navegación
+import { useNavigate } from "react-router-dom";
 
 const THEME = {
   fontFamily:
@@ -6,37 +8,33 @@ const THEME = {
 
   colors: {
     background: "linear-gradient(135deg,#f72585,#b5179e,#7209b7,#560bad,#480ca8,#3a0ca3,#3f37c9,#4361ee,#4895ef,#4cc9f0)", // Fondo general de la página
-    panelBg:   "#ffffff",  // Fondo del panel/tarjeta
-    text:      "#001435",  // Texto principal
-    textMuted: "#6B7280",  // Texto secundario/labels
-    border:    "#e5e7eb",  // Borde de paneles/botón secundario
-    primary:   "#003087",  // Botón primario y “logo”
+    panelBg: "#ffffff", // Fondo del panel/tarjeta
+    text: "#001435", // Texto principal
+    textMuted: "#6B7280", // Texto secundario/labels
+    border: "#e5e7eb", // Borde de paneles/botón secundario
+    primary: "#003087", // Botón primario y “logo”
     primaryHover: "#252422", // Hover del botón primario
-    link:      "#0070ba",  // Color de enlaces
-    inputBg:   "#ffffff",  // Fondo del input
-    inputBorder: "#d1d5db",// Borde del input (reposo)
-    inputFocus:  "#2563eb",// Borde del input (focus)
-    divider:   "#e5e7eb",  // Línea divisoria “o”
+    link: "#0070ba", // Color de enlaces
+    inputBg: "#ffffff", // Fondo del input
+    inputBorder: "#d1d5db", // Borde del input (reposo)
+    inputFocus: "#2563eb", // Borde del input (focus)
+    divider: "#e5e7eb", // Línea divisoria “o”
   },
 
-  
   radius: {
     panel: 16, // Redondeado del panel
     input: 10, // Redondeado de inputs
-    button: 28 // Redondeado de botones
+    button: 28, // Redondeado de botones
   },
 
-  
   shadow: "0 12px 32px rgba(0,0,0,.06)", // Sombra tarjeta
 
-  
   widths: {
-    panel: 440,      // Ancho máximo del panel
+    panel: 440, // Ancho máximo del panel
     inputHeight: 52, // Alto de inputs
-    buttonHeight: 48 // Alto de botones
+    buttonHeight: 48, // Alto de botones
   },
 
-  
   logoEmoji: "🏦", // emoji arriba
 };
 
@@ -44,6 +42,9 @@ const THEME = {
 const API = import.meta?.env?.VITE_API_URL || "http://localhost:3000";
 
 export default function Login() {
+  // PASO 2: Inicializamos el 'hook' de navegación
+  const navigate = useNavigate();
+
   // Pasos del flujo (1: email, 2: pass, 3: 2FA)
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
@@ -53,7 +54,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
-  
   const nextFromEmail = (e) => {
     e.preventDefault();
     setErr("");
@@ -61,7 +61,6 @@ export default function Login() {
     setStep(2);
   };
 
-  
   const submitLogin = async (e) => {
     e.preventDefault();
     setErr("");
@@ -75,7 +74,6 @@ export default function Login() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || "Error al iniciar sesión");
 
-      
       if (data?.requires2fa) {
         setTokenTemporal(data.tokenTemporal);
         setCodigo2fa("");
@@ -84,10 +82,12 @@ export default function Login() {
         return;
       }
 
-      
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.usuario));
-      alert("Inicio de sesión exitoso (sin 2FA)");
+      
+      // PASO 3 (CAMBIO 1): Reemplazamos el 'alert' por la redirección
+      navigate("/simulador"); 
+      
       setLoading(false);
     } catch (error) {
       setErr(error.message);
@@ -95,7 +95,6 @@ export default function Login() {
     }
   };
 
-  
   const submit2FA = async (e) => {
     e.preventDefault();
     setErr("");
@@ -111,7 +110,10 @@ export default function Login() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.usuario));
-      alert("Verificación 2FA exitosa. Sesión iniciada.");
+
+      // PASO 3 (CAMBIO 2): Reemplazamos el 'alert' por la redirección
+      navigate("/simulador");
+
       setLoading(false);
     } catch (error) {
       setErr(error.message);
@@ -139,8 +141,8 @@ export default function Login() {
           borderRadius: THEME.radius.panel,
           boxShadow: THEME.shadow,
           padding: 28,
-          boxSizing: "border-box",   
-          overflow: "hidden",         
+          boxSizing: "border-box", 
+          overflow: "hidden", 
         }}
       >
         {/* Logo */}
@@ -162,9 +164,7 @@ export default function Login() {
           </div>
         </div>
 
-        {
-
-        }
+        {/* ... (el resto del formulario de email, paso 1) ... */}
         {step === 1 && (
           <form onSubmit={nextFromEmail} style={{ marginTop: 12 }}>
             <label
@@ -194,8 +194,8 @@ export default function Login() {
                 padding: "0 14px",
                 outline: "none",
                 fontSize: 16,
-                boxSizing: "border-box",   
-                display: "block",          
+                boxSizing: "border-box", 
+                display: "block", 
               }}
               onFocus={(e) =>
                 (e.currentTarget.style.borderColor = THEME.colors.inputFocus)
@@ -238,8 +238,8 @@ export default function Login() {
                 color: "#fff",
                 fontWeight: 700,
                 cursor: "pointer",
-                boxSizing: "border-box",   
-                display: "block",          
+                boxSizing: "border-box", 
+                display: "block", 
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.background = THEME.colors.primaryHover)
@@ -251,9 +251,6 @@ export default function Login() {
               Siguiente
             </button>
 
-            {
-
-            }
             <div
               style={{
                 display: "grid",
@@ -273,7 +270,10 @@ export default function Login() {
             {}
             <button
               type="button"
-              onClick={() => (window.location.href = "/register")}
+              // PASO 4 (CAMBIO 3, Opcional pero recomendado):
+              // Reemplazamos el 'window.location.href' por 'navigate' para 
+              // que no recargue toda la página (es más rápido).
+              onClick={() => navigate("/register")}
               style={{
                 width: "100%",
                 height: THEME.widths.buttonHeight,
@@ -283,8 +283,8 @@ export default function Login() {
                 color: THEME.colors.text,
                 fontWeight: 700,
                 cursor: "pointer",
-                boxSizing: "border-box",   
-                display: "block",          
+                boxSizing: "border-box", 
+                display: "block", 
               }}
             >
               Crear cuenta
@@ -292,7 +292,7 @@ export default function Login() {
           </form>
         )}
 
-        {}
+        {/* ... (el resto del formulario de contraseña, paso 2) ... */}
         {step === 2 && (
           <form onSubmit={submitLogin} style={{ marginTop: 12 }}>
             <div
@@ -348,8 +348,8 @@ export default function Login() {
                 padding: "0 14px",
                 outline: "none",
                 fontSize: 16,
-                boxSizing: "border-box",  
-                display: "block",         
+                boxSizing: "border-box", 
+                display: "block", 
               }}
               onFocus={(e) =>
                 (e.currentTarget.style.borderColor = THEME.colors.inputFocus)
@@ -379,8 +379,8 @@ export default function Login() {
                 fontWeight: 700,
                 cursor: "pointer",
                 opacity: loading ? 0.85 : 1,
-                boxSizing: "border-box",  
-                display: "block",         
+                boxSizing: "border-box", 
+                display: "block", 
               }}
             >
               {loading ? "Ingresando..." : "Iniciar sesión"}
@@ -399,8 +399,8 @@ export default function Login() {
                 color: THEME.colors.text,
                 fontWeight: 700,
                 cursor: "pointer",
-                boxSizing: "border-box",  
-                display: "block",         
+                boxSizing: "border-box", 
+                display: "block", 
               }}
             >
               Usar otro email
@@ -408,7 +408,7 @@ export default function Login() {
           </form>
         )}
 
-        {}
+        {/* ... (el resto del formulario de 2FA, paso 3) ... */}
         {step === 3 && (
           <form onSubmit={submit2FA} style={{ marginTop: 12 }}>
             <div
@@ -467,8 +467,8 @@ export default function Login() {
                 outline: "none",
                 fontSize: 18,
                 letterSpacing: 4,
-                boxSizing: "border-box",  
-                display: "block",         
+                boxSizing: "border-box", 
+                display: "block", 
               }}
               onFocus={(e) =>
                 (e.currentTarget.style.borderColor = THEME.colors.inputFocus)
@@ -498,8 +498,8 @@ export default function Login() {
                 fontWeight: 700,
                 cursor: "pointer",
                 opacity: loading ? 0.85 : 1,
-                boxSizing: "border-box",  
-                display: "block",         
+                boxSizing: "border-box", 
+                display: "block", 
               }}
             >
               {loading ? "Verificando..." : "Verificar código"}
@@ -518,8 +518,8 @@ export default function Login() {
                 color: THEME.colors.text,
                 fontWeight: 700,
                 cursor: "pointer",
-                boxSizing: "border-box",  
-                display: "block",         
+                boxSizing: "border-box", 
+                display: "block", 
               }}
             >
               Volver a contraseña
