@@ -7,7 +7,7 @@ Este es un ejemplo de una aplicación Node.js usando Express, Docker y PostgreSQ
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (v2.0+)
 - [Node.js](https://nodejs.org/) (opcional, solo para desarrollo local)
-- `curl` o cliente HTTP (para probar endpoints)
+- `curl` o cliente HTTP (para probar endpoints) / usamos Yaak mayoritariamente
 
 ## Instalación
 
