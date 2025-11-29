@@ -1,0 +1,126 @@
+:root {
+  --font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+  /* Colors from your THEME */
+  --color-background: linear-gradient(135deg,#f72585,#b5179e,#7209b7,#560bad,#480ca8,#3a0ca3,#3f37c9,#4361ee,#4895ef,#4cc9f0);
+  --color-panel-bg: #ffffff;
+  --color-text: #001435;
+  --color-text-muted: #6B7280;
+  --color-border: #e5e7eb;
+  --color-primary: #003087;
+  --color-primary-hover: #252422;
+  --color-link: #0070ba;
+  --color-input-bg: #ffffff;
+  --color-input-border: #d1d5db;
+  --color-input-focus: #2563eb;
+  --color-divider: #e5e7eb;
+
+  /* radius */
+  --radius-panel: 16px;
+  --radius-input: 10px;
+  --radius-button: 28px;
+
+  /* sizes */
+  --panel-width: 440px;
+  --input-height: 52px;
+  --button-height: 48px;
+
+  /* shadow */
+  --shadow-panel: 0 12px 32px rgba(0,0,0,.06);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;           
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+input, button {
+  font: inherit;                    
+  outline: none;                    
+  transition: all .2s ease;         
+}
+
+
+input {
+  background: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  height: var(--input-height);
+  border-radius: var(--radius-input);
+  padding: 0 14px;
+}
+input:focus {
+  border-color: var(--color-input-focus);
+}
+
+
+button {
+  cursor: pointer;
+  height: var(--button-height);
+  border-radius: var(--radius-button);
+  font-weight: 700;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.button-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.button-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+
+
+/* --- Main Display --- */
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 40px;
+}
+
+/* The main panel */
+.main-panel {
+  width: 65%;
+  max-width: 900px;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+/* For centering text inside title/description */
+.main-panel h1,
+.main-panel p {
+  text-align: center;
+}
+
+/* Simulation results box */
+.simulador-resultados {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+/* Center the bottom button */
+.simulador-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
