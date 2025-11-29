@@ -20,7 +20,7 @@ services:
 
   backend:
     build:
-      context: ./Backend
+      context: ./backend
       dockerfile: Dockerfile
     container_name: app-backend
     environment:
